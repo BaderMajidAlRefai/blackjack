@@ -1,12 +1,13 @@
 #TODO make first dealer card hidden
 from cards import generate_deck
 from random import *
+import time
 
 import random
 
 def game(player_money):
     while True:
-        player_bet = input("How much would you like to bet?")
+        player_bet = int(input("How much would you like to bet? "))
         if player_bet > player_money:
             print("Woa there buddy, you don't have that much moolah.")
         else:
@@ -16,8 +17,8 @@ def game(player_money):
     player_hand = []
     dealer_hand = []
     deal_cards(player_hand, dealer_hand, deck)
-    print(render_screen())
     while True:
+        print(render_screen(player_hand, dealer_hand))
         response = prompt()
         if response == True:
             add_card(player_hand, deck)
@@ -28,14 +29,14 @@ def game(player_money):
         elif response == False:
             break
         
-        result = showdown(dealer_hand, player_hand, player_bet)
+    result = showdown(player_hand, dealer_hand, player_bet, deck)
     return result
 
 
 def prompt():
     response = 0
     while True:
-        response = input("Would you like to hit [1] or stay [2]")
+        response = int(input("Would you like to hit [1] or stay [2] "))
         if response == 1:
             return True
         elif response == 2:
@@ -59,24 +60,27 @@ def count(hand):
         count += card.value
     return count
 
-def showdown(player_hand, dealer_hand, player_bet):
+def showdown(player_hand, dealer_hand, player_bet, deck):
         if count(player_hand) > 21:
-            print(render_screen())
+            time.sleep(0.5)
+            print(render_screen(player_hand, dealer_hand))
             print("You lost, bummer.")
-            return "player_loss", 
+            return ("player_loss", player_bet)
+
         while True:
-            add_card("Dealer", dealer_hand)
-            print(render_screen())
+            add_card(dealer_hand, deck)
+            print(render_screen(player_hand, dealer_hand))
+            time.sleep(1)
             if count(dealer_hand) > 21:
                 print("You won!")
-                return "player_victory"
+                return ("player_victory", player_bet)
             elif count(dealer_hand > 16):
                 if count(dealer_hand) > count(player_hand):
                     print("You lost, bummer.")
-                    return "player_loss"
+                    return ("player_loss", player_bet)
                 else:
                     print("You won!")
-                    return "player_victory", player_bet
+                    return ("player_victory", player_bet)
     
 
 
@@ -85,17 +89,17 @@ def render_screen(player_hand, dealer_hand):
         dealer_score = count(dealer_hand)
         player_cards = ""
         dealer_cards = ""
+        for card in dealer_hand:
+            dealer_cards += card.name
+            dealer_cards += ","
         for card in player_hand:
-            player_cards += card.name
-            player_cards += ","
-        for card in player_hand:
-            player_cards += card.name
+            player_cards += f"{card.name}"
             player_cards += ","
 
-        print(f"Dealer: {dealer_score}, {dealer_hand}")
-        print(f"You: {player_score}, {player_cards}")
+        return f"""
+        Dealer: [{dealer_score}], {dealer_cards}
+        You: [{player_score}] {player_cards}
+        """
         
 
 
-def deal_card():
-    return

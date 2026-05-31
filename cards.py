@@ -28,6 +28,6 @@ def generate_deck():
     for suit in suits:
         for name, value, ace in cards:
             card_name = (f"{name} of {suit}")
-            deck.append(card(name, value, suit))
+            deck.append(card(card_name, value, ace))
 
     return deck
