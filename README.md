@@ -9,7 +9,7 @@
 Little black jack game you can play in your terminal. 
 I made it as a little fun break from dealing with React. 
 
-# Features
+## Features
 - Betting system
 - Dealer AI
 - Randomized card deck
