@@ -1,3 +1,4 @@
+#TODO Add exception handling.
 import game_functions
 import time
 import sys
@@ -11,7 +12,7 @@ while True:
         time.sleep(2)
         print("get out.")
         time.sleep(0.5)
-        sys.exit
+        sys.exit(0)
 
     print(f"You currently have: {chips} chips!")
     input("Please enter any key to start the game.")
