@@ -1,8 +1,7 @@
-#TODO make first dealer card hidden
 #TODO make aces be 11 or 1 depending on whether or not the player in question is about to bust 
 #TODO make second dealer card be hidden until end
 from cards import generate_deck
-from random import *
+from random import randrange
 
 import random
 
@@ -77,7 +76,6 @@ def showdown(player_hand, dealer_hand, player_bet, deck):
             print(render_screen(player_hand, dealer_hand, True))
 
             if count(dealer_hand) > 21:
-                print("You won!")
                 return player_victory(player_bet)
         
     
