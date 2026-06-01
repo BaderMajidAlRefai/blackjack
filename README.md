@@ -2,8 +2,6 @@
 
 ## Technologies used 
 - Python
-- Time 
-- Random 
 
 ## Project Description 
 Little black jack game you can play in your terminal. 
