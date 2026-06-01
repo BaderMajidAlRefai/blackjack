@@ -1,5 +1,4 @@
 #TODO make aces be 11 or 1 depending on whether or not the player in question is about to bust 
-#TODO make second dealer card be hidden until end
 from cards import generate_deck
 from random import randrange
 
@@ -23,8 +22,10 @@ def game(player_money):
         if response == True:
             add_card(player_hand, deck)
             if count(player_hand) > 21:
-                break
-            elif count == 21:
+                result = ace_check(player_hand)
+                if result == "no-aces":
+                    break
+            elif count(player_hand) == 21:
                 break
         elif response == False:
             break
@@ -78,7 +79,9 @@ def showdown(player_hand, dealer_hand, player_bet, deck):
             print(render_screen(player_hand, dealer_hand, True))
 
             if count(dealer_hand) > 21:
-                return player_victory(player_bet)
+                result = ace_check(dealer_hand)
+                if result == "no-aces":
+                    return player_victory(player_bet)
         
     
 
@@ -121,3 +124,11 @@ def player_loss(player_bet):
 def player_victory(player_bet):
     print("You Won!")
     return ("player_victory", player_bet)
+
+def ace_check(hand):
+    for card in hand:
+        if card.ace == True:
+            card.value = 1
+            card.ace = False
+            return
+    return "no-aces"
