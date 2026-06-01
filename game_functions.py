@@ -1,4 +1,3 @@
-#TODO make aces be 11 or 1 depending on whether or not the player in question is about to bust 
 from cards import generate_deck
 from random import randrange
 
@@ -74,6 +73,8 @@ def showdown(player_hand, dealer_hand, player_bet, deck):
                 elif count(dealer_hand) < count(player_hand):
                     print(render_screen(player_hand, dealer_hand, True))
                     return player_victory(player_bet)
+                elif count(dealer_hand) == count(player_hand):
+                    return draw()
                 
             add_card(dealer_hand, deck)
             print(render_screen(player_hand, dealer_hand, True))
@@ -124,6 +125,9 @@ def player_loss(player_bet):
 def player_victory(player_bet):
     print("You Won!")
     return ("player_victory", player_bet)
+
+def draw():
+    print("draw.")
 
 def ace_check(hand):
     for card in hand:
