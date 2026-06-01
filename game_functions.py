@@ -1,7 +1,8 @@
 #TODO make first dealer card hidden
+#TODO make aces be 11 or 1 depending on whether or not the player in question is about to bust 
+#TODO make second dealer card be hidden until end
 from cards import generate_deck
 from random import *
-import time
 
 import random
 
@@ -18,7 +19,7 @@ def game(player_money):
     dealer_hand = []
     deal_cards(player_hand, dealer_hand, deck)
     while True:
-        print(render_screen(player_hand, dealer_hand))
+        print(render_screen(player_hand, dealer_hand, False))
         response = prompt()
         if response == True:
             add_card(player_hand, deck)
@@ -62,44 +63,61 @@ def count(hand):
 
 def showdown(player_hand, dealer_hand, player_bet, deck):
         if count(player_hand) > 21:
-            time.sleep(0.5)
-            print(render_screen(player_hand, dealer_hand))
-            print("You lost, bummer.")
-            return ("player_loss", player_bet)
+            print(render_screen(player_hand, dealer_hand, True))
+            return player_loss(player_bet)
 
         while True:
+            if count(dealer_hand) >= 16:
+                if count(dealer_hand) > count(player_hand):
+                    return player_loss(player_bet)
+                elif count(dealer_hand) < count(player_hand):
+                    return player_victory(player_bet)
+                
             add_card(dealer_hand, deck)
-            print(render_screen(player_hand, dealer_hand))
-            time.sleep(1)
+            print(render_screen(player_hand, dealer_hand, True))
+
             if count(dealer_hand) > 21:
                 print("You won!")
-                return ("player_victory", player_bet)
-            elif count(dealer_hand > 16):
-                if count(dealer_hand) > count(player_hand):
-                    print("You lost, bummer.")
-                    return ("player_loss", player_bet)
-                else:
-                    print("You won!")
-                    return ("player_victory", player_bet)
+                return player_victory(player_bet)
+        
     
 
 
-def render_screen(player_hand, dealer_hand):
-        player_score = count(player_hand)
-        dealer_score = count(dealer_hand)
-        player_cards = ""
-        dealer_cards = ""
-        for card in dealer_hand:
-            dealer_cards += card.name
-            dealer_cards += ","
-        for card in player_hand:
-            player_cards += f"{card.name}"
-            player_cards += ","
+def render_screen(player_hand, dealer_hand, showdown):
+        if showdown == True:
+            player_score = count(player_hand)
+            dealer_score = count(dealer_hand)
+            player_cards = ""
+            dealer_cards = ""
+            for card in dealer_hand:
+                dealer_cards += card.name
+                dealer_cards += ","
+            for card in player_hand:
+                player_cards += f"{card.name}"
+                player_cards += ","
 
-        return f"""
-        Dealer: [{dealer_score}], {dealer_cards}
-        You: [{player_score}] {player_cards}
-        """
+            return f"""
+            Dealer: [{dealer_score}], {dealer_cards}
+            You: [{player_score}] {player_cards}
+            """
+        else:
+            player_score = count(player_hand)
+            dealer_score = dealer_hand[0].value
+            player_cards = ""
+            dealer_card = dealer_hand[0].name
+            for card in player_hand:
+                player_cards += f"{card.name}"
+                player_cards += ","
+
+            return f"""
+            Dealer: [{dealer_score}], {dealer_card}, ###
+            You: [{player_score}] {player_cards}
+            """
         
+def player_loss(player_bet):
+    print("You lost... bummer")
+    return ("player_loss", player_bet)
 
-
+def player_victory(player_bet):
+    print("You Won!")
+    return ("player_victory", player_bet)
