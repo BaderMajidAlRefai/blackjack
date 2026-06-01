@@ -68,8 +68,10 @@ def showdown(player_hand, dealer_hand, player_bet, deck):
         while True:
             if count(dealer_hand) >= 16:
                 if count(dealer_hand) > count(player_hand):
+                    print(render_screen(player_hand, dealer_hand, True))
                     return player_loss(player_bet)
                 elif count(dealer_hand) < count(player_hand):
+                    print(render_screen(player_hand, dealer_hand, True))
                     return player_victory(player_bet)
                 
             add_card(dealer_hand, deck)
