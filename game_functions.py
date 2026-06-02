@@ -134,5 +134,5 @@ def ace_check(hand):
         if card.ace == True:
             card.value = 1
             card.ace = False
-            return
+            return 0
     return "no-aces"
